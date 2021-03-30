@@ -1,0 +1,133 @@
+This is an example of how to do this in md
+
+'let fakedData = [];
+let fakedDataInstance = {};
+
+function generateDatum (value, index, array) {
+  
+  let dataType     = value;
+  let variableName = value;
+  
+  var datum = "";
+  switch (dataType) {
+
+    case "firstName":
+      datum = faker.name.firstName();
+      break;
+    case "lastName":
+      datum = faker.name.lastName();
+      break;
+    case "fullName":
+      datum = faker.fake("{{name.suffix}} {{name.firstName}} {{name.lastName}}");
+      break;
+
+    case "jobTitle":
+      datum = faker.name.jobTitle();
+      break;
+    case "prefix":
+      datum = faker.name.prefix(); 
+      break;
+    case "suffix":
+      datum = faker.name.suffix();
+      break;
+    case "jobArea":
+      datum = faker.name.jobArea();
+      break;
+
+    case "ssn":
+      datum = faker.phone.phoneNumber('###-##-####');
+      break;
+	  
+    case "company":
+    case "companyName":
+      datum = faker.company.companyName();
+      break;
+
+    case "phoneWork":
+    case "phoneHome":
+    case "phoneMain":
+    case "phoneNumber":
+    case "phoneMobile":
+      datum = faker.phone.phoneNumber();
+      break;
+	  
+    case "email":
+    case "emailWork":
+    case "emailAddr":
+    case "emailAddress":
+      datum = faker.internet.email();
+      break;
+    case "homepage":
+    case "webPage":
+      datum = faker.internet.url();
+      break;
+
+    case "streetAddress":
+      datum = faker.address.streetAddress();
+      break;
+    case "secondaryAddress":
+      datum = faker.address.secondaryAddress();
+      break;
+    case "city":
+      datum = faker.address.city();
+      break;
+    case "state":
+      datum = faker.address.state();
+      break;
+    case "stateAbbr":
+      datum = faker.address.stateAbbr();
+      break;
+    case "zipCode":
+      datum= faker.address.zipCode();
+      break;
+    case "country":
+      datum= faker.address.country();
+      break;
+	    }
+  
+  fakedDataInstance[variableName] = datum;
+  
+}
+
+if (typeof dataSchema === 'undefined' || dataSchema === null)
+  throw new Error("dataSchema undefined.");
+
+let count = 1;
+if (typeof numDataSets !== 'undefined' && numDataSets > 1)
+  count = numDataSets;
+
+// Create count number of instances of faked data 
+//
+for (let i = 0; i < count; i++) {
+    
+  fakedDataInstance = {};
+
+  dataSchema.forEach(generateDatum);
+  
+  fakedData.push(fakedDataInstance);
+
+}
+console.log("Generated " + fakedData.length + " instances of data for dataSchema " + JSON.stringify(dataSchema) + " into exportsTest.fakedData");
+
+// Store all instances of faked data in a global/test variable (fakedData)
+//
+exportsTest.fakedData = fakedData;
+console.log("Faked data stored in exportsTest.fakedData and variable(s) of the same name as there type in dataSchema");
+
+// Take an index and store fakedData[0]'s values as naked top level variables
+//
+let naked_variable_index = 0;
+function storeFirstAsGlobalNakedVariables(value, index, array) {
+  
+  let variableName  = value;
+  let variableValue = fakedData[naked_variable_index][variableName];
+   
+  let setString    = "exportsTest." + variableName + " = '" + variableValue + "'";
+  console.log("  " + setString);
+  eval (setString);
+  
+}
+Object.keys(fakedData[naked_variable_index]).forEach(storeFirstAsGlobalNakedVariables);
+
+console.log("fakeddata = " + JSON.stringify(fakedData));
+
